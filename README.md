@@ -23,7 +23,7 @@ Once you've setup your database and your configuration (see below) is complete, 
 `python3 -m NekoRobot`
 
 ## Deploy
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Husbandoo/Project-Eris) 
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/Husbandoo/Eris-Main) 
 
 ## Setting up the bot (Read this before trying to use!):
 Please make sure to use python3.6, as I cannot guarantee everything will work as expected on older python versions!
@@ -41,6 +41,3 @@ your other settings.
 It is recommended to import sample_config and extend the Config class, as this will ensure your config contains all 
 defaults set in the sample_config, hence making it easier to upgrade.
 
-An example `config.py` file could be:
-```
-from NekoRobot.sample_config import Config
