@@ -1,5 +1,5 @@
 <h2 align="center">
-    ──「𝐍𝐞𝐤𝐨 𝐑𝐨𝐛𝐨𝐭」──
+    ──「Eris Boreas Greyrat」──
 </h2>
 
 <p align="center">
