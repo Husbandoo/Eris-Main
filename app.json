@@ -8,7 +8,7 @@
          "manager",
          "NekoRobot"
       ],   
-   "repository": "https://github.com/Husbandoo/Project-Eris",
+   "repository": "https://github.com/Husbandoo/Eris-Main",
    "addons": [
       {
          "options": {
@@ -142,7 +142,7 @@
       "DONATION_LINK": {
          "description": "Optional: link where you would like to receive donations. If you are a noob, better leave it",
          "required": false,
-         "value": "t.me/Horimaya"
+         "value": "t.me/Husbandoo"
       },
       "DEL_CMDS": {
          "description": "Set this to True if you want to delete command messages from users who don't have the perms to run that command.",
