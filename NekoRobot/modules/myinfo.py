@@ -28,7 +28,7 @@ async def proboyx(event):
     current_time = datetime.utcnow()
     betsy = event.sender.first_name
     button = [[custom.Button.inline("Click Here",data="information")]]
-    on = await bot.send_file(event.chat_id, file=file2,caption= f"♡ Hey {betsy}, I'm Eris Boreas Greyrat\n♡ I'm Created By [Husbando](tg://user?id=1938491135)\n♡ Click The Button Below To Get Your Info", buttons=button)
+    on = await bot.send_file(event.chat_id, file=file2,caption= f"◈ Hey {betsy}, I'm Eris Greyrat\n◈ I'm Created By [Husbando](tg://user?id=1938491135)\n◈ Click The Button Below To Get Your Info", buttons=button)
 
     await asyncio.sleep(edit_time)
     ok = await bot.edit_message(event.chat_id, on, file=file3, buttons=button) 
