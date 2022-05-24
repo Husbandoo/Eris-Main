@@ -82,8 +82,8 @@ def get_readable_time(seconds: int) -> str:
 buttons = [
     [
                         InlineKeyboardButton(
-                            text=f"Add Misha To Your Group",
-                            url=f"t.me/MishaXRobot?startgroup=true")
+                            text=f"Add Eris To Your Group",
+                            url=f"t.me/ErisXRobot?startgroup=true")
                     ],
                    [
                        InlineKeyboardButton(text="[Help]", callback_data="help_back"),
@@ -245,7 +245,7 @@ def start(update: Update, context: CallbackContext):
             
             first_name = update.effective_user.first_name
             update.effective_message.reply_photo(
-                photo=(PM_START_PIC),
+                PM_START_PIC,
                 caption=PM_START_TEXT.format(
                     escape_markdown(context.bot.first_name),
                     escape_markdown(first_name),
@@ -258,7 +258,7 @@ def start(update: Update, context: CallbackContext):
             )
     else:
         first_name = update.effective_user.first_name
-        update.effective_message.reply_animation(
+        update.effective_message.reply_video(
                 random.choice(NEKO_IMG), caption= "<b>Yes,Darling I'm alive! Haven't sleep since</b>: <code>{}</code>".format(
                 uptime
  
