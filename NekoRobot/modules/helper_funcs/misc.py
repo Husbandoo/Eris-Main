@@ -84,7 +84,7 @@ def paginate_modules(page_n: int, module_dict: Dict, prefix, chat=None) -> List:
              EqInlineKeyboardButton("》", callback_data="{}_prev({})".format(prefix, modulo_page)))]
 
     else:
-        pairs +=[[EqInlineKeyboardButton("Close", callback_data="neko_back")]]
+        pairs +=[[EqInlineKeyboardButton("Aogiri", url="https://t.me/AogiriNetwork")]]
 
     return pairs
 
