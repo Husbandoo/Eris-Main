@@ -87,7 +87,7 @@ buttons = [
                     ],
                    [
                        InlineKeyboardButton(text="[Aogiri]", url="https://t.me/AnimeChatFrozen"),
-                       InlineKeyboardButton(text="Chat", url="https://t.me/AnimeChatFrozen"),
+                       InlineKeyboardButton(text="Chat", url="https://t.me/AogiriNetwork"),
                        InlineKeyboardButton(text="[Source]", url="https://t.me/NexusXSupport/12582"),
                      ],
                     [                  
@@ -262,6 +262,9 @@ def start(update: Update, context: CallbackContext):
                 random.choice(NEKO_IMG), caption= "<b>Yes,Darling I'm alive! Haven't sleep since</b>: <code>{}</code>".format(
                 uptime
  
+        first_name = update.effective_user.first_name
+        update.effective_message.reply_video(
+                random.choice(NEKO_IMG), caption= "<b>Yes,Darling I'm alive! Haven't sleep since</b>
             ),
             
             parse_mode=ParseMode.HTML,
@@ -370,7 +373,7 @@ def neko_about_callback(update, context):
         query.message.edit_text(
             text=f"[◈](https://te.legra.ph/file/9abdbb8e7fa75e03a91ea.jpg) Hey {escape_markdown(first_name)} Darling,"
               f"\n\n ➖➖➖➖➖➖➖➖➖➖➖➖➖"
-              f"\n\n Neko Info ➣ :-"
+              f"\n\n Eris Info ➣ :-"
               f"\n\n ◈ I Am An Anime Themed Advance Group Management Bot With A Lot Of Sexy Features."
               f"\n\n ➖➖➖➖➖➖➖➖➖➖➖➖➖"
               f"\n\n ◈ Check The Buttons To Know About Me More.*",
@@ -459,7 +462,7 @@ def get_help(update: Update, context: CallbackContext):
             reply_markup=InlineKeyboardMarkup(
                 [
                   [
-                  InlineKeyboardButton(text="Click Here", url="https://t.me/MishaXRobot?start=help")
+                  InlineKeyboardButton(text="Click Here", url="https://t.me/ErisXRobot?start=help")
                   ]
                 ]
             ),
@@ -679,7 +682,7 @@ def main():
 
                              text="[Summon Me]",
 
-                             url=f"t.me/MishaXRobot?startgroup=true"),
+                             url=f"t.me/ErisXRobot?startgroup=true"),
 
 
                      ] 
