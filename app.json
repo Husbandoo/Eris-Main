@@ -83,6 +83,11 @@
          "required": false,
          "value": ""
       }, 
+      "INFOPIC": {
+         "description": "Rehne de Lode",
+         "required": true,
+         "value": "true"
+      }, 
       "STRICT_GBAN": {
          "description": "Enforce gbans across new groups as well as old groups. When a gbanned user talks, he will be banned.",
          "value": "True"
