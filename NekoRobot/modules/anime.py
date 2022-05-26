@@ -15,10 +15,10 @@ from telegram import InlineKeyboardButton, InlineKeyboardMarkup, ParseMode, Upda
 from telegram.ext import CommandHandler, CallbackQueryHandler, CallbackContext
 from telegram.utils.helpers import mention_html
 
-from SiestaRobot import OWNER_ID, REDIS, dispatcher
-from SiestaRobot.modules.disable import DisableAbleCommandHandler
-from SiestaRobot.modules.helper_funcs.alternate import typing_action
-from SiestaRobot.modules.helper_funcs.chat_status import callbacks_in_filters
+from NekoRobot import OWNER_ID, REDIS, dispatcher
+from NekoRobot.modules.disable import DisableAbleCommandHandler
+from NekoRobot.modules.helper_funcs.alternate import typing_action
+from NekoRobot.modules.helper_funcs.chat_status import callbacks_in_filters
 
 kaizoku_btn = "Kaizoku ☠️"
 kayo_btn = "Kayo 🏴‍☠️"
