@@ -1,3 +1,26 @@
+"""
+MIT License
+Copyright (C) 2017-2019, Paul Larsen
+Copyright (C) 2022 Hodacka
+Copyright (c) 2022, Yūki • Black Knights Union, <https://github.com/Hodacka/NekoRobot-3>
+This file is part of @NekoXRobot (Telegram Bot)
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the Software), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+"""
+
 from time import perf_counter
 from functools import wraps
 from cachetools import TTLCache
@@ -13,7 +36,7 @@ from NekoRobot import (
     dispatcher,
 )
 
-from telegram import Chat, ChatMember, ParseMode, Update
+from telegram import Chat, ChatMember, ParseMode, Update, User
 from telegram.ext import CallbackContext
 
 # stores admemes in memory for 10 min.
@@ -32,6 +55,17 @@ def is_support_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool
 def is_sudo_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
     return user_id in DRAGONS or user_id in DEV_USERS
 
+def is_stats_plus(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
+    return user_id in DEV_USERS
+
+def user_can_changeinfo(chat: Chat, user: User, bot_id: int) -> bool:
+    return chat.get_member(user.id).can_change_info
+
+def user_can_promote(chat: Chat, user: User, bot_id: int) -> bool:
+    return chat.get_member(user.id).can_promote_members
+
+def user_can_pin(chat: Chat, user: User, bot_id: int) -> bool:
+    return chat.get_member(user.id).can_pin_messages
 
 def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
     if (
@@ -39,25 +73,25 @@ def is_user_admin(chat: Chat, user_id: int, member: ChatMember = None) -> bool:
         or user_id in DRAGONS
         or user_id in DEV_USERS
         or chat.all_members_are_administrators
-        or user_id in [777000, 1087968824]
+        or user_id in {777000, 1087968824}
     ):  # Count telegram and Group Anonymous as admin
         return True
-    if not member:
-        with THREAD_LOCK:
-            # try to fetch from cache first.
-            try:
-                return user_id in ADMIN_CACHE[chat.id]
-            except KeyError:
-                # keyerror happend means cache is deleted,
-                # so query bot api again and return user status
-                # while saving it in cache for future useage...
-                chat_admins = dispatcher.bot.getChatAdministrators(chat.id)
-                admin_list = [x.user.id for x in chat_admins]
-                ADMIN_CACHE[chat.id] = admin_list
-
-                return user_id in admin_list
-    else:
+    if member:
         return member.status in ("administrator", "creator")
+
+    with THREAD_LOCK:
+        # try to fetch from cache first.
+        try:
+            return user_id in ADMIN_CACHE[chat.id]
+        except KeyError:
+            # keyerror happend means cache is deleted,
+            # so query bot api again and return user status
+            # while saving it in cache for future useage...
+            chat_admins = dispatcher.bot.getChatAdministrators(chat.id)
+            admin_list = [x.user.id for x in chat_admins]
+            ADMIN_CACHE[chat.id] = admin_list
+
+            return user_id in admin_list
 
 
 def is_bot_admin(chat: Chat, bot_id: int, bot_member: ChatMember = None) -> bool:
@@ -82,7 +116,7 @@ def is_user_ban_protected(chat: Chat, user_id: int, member: ChatMember = None) -
         or user_id in WOLVES
         or user_id in TIGERS
         or chat.all_members_are_administrators
-        or user_id in [777000, 1087968824]
+        or user_id in {777000, 1087968824}
     ):  # Count telegram and Group Anonymous as admin
         return True
 
@@ -115,7 +149,7 @@ def dev_plus(func):
         else:
             update.effective_message.reply_text(
                 "This is a developer restricted command."
-                " You do not have permissions to run this.",
+                "You do not have permissions to run this.",
             )
 
     return is_dev_plus_func
@@ -139,7 +173,30 @@ def sudo_plus(func):
                 pass
         else:
             update.effective_message.reply_text(
-                "Who dis non-admin telling me what to do? You want a punch?",
+                "At Least be an Admin to use these all Commands",
+            )
+
+    return is_sudo_plus_func
+
+def stats_plus(func):
+    @wraps(func)
+    def is_stats_plus_func(update: Update, context: CallbackContext, *args, **kwargs):
+        bot = context.bot
+        user = update.effective_user
+        chat = update.effective_chat
+
+        if user and is_stats_plus(chat, user.id):
+            return func(update, context, *args, **kwargs)
+        if not user:
+            pass
+        elif DEL_CMDS and " " not in update.effective_message.text:
+            try:
+                update.effective_message.delete()
+            except:
+                pass
+        else:
+            update.effective_message.reply_text(
+                "Neko stats is just for Dev User",
             )
 
     return is_sudo_plus_func
@@ -166,10 +223,7 @@ def support_plus(func):
 def whitelist_plus(func):
     @wraps(func)
     def is_whitelist_plus_func(
-        update: Update,
-        context: CallbackContext,
-        *args,
-        **kwargs,
+        update: Update, context: CallbackContext, *args, **kwargs,
     ):
         bot = context.bot
         user = update.effective_user
@@ -202,7 +256,7 @@ def user_admin(func):
                 pass
         else:
             update.effective_message.reply_text(
-                "Who dis non-admin telling me what to do? You want a punch?",
+                "At Least be an Admin to use these all Commands",
             )
 
     return is_admin
@@ -211,10 +265,7 @@ def user_admin(func):
 def user_admin_no_reply(func):
     @wraps(func)
     def is_not_admin_no_reply(
-        update: Update,
-        context: CallbackContext,
-        *args,
-        **kwargs,
+        update: Update, context: CallbackContext, *args, **kwargs,
     ):
         bot = context.bot
         user = update.effective_user
@@ -242,8 +293,6 @@ def user_not_admin(func):
 
         if user and not is_user_admin(chat, user.id):
             return func(update, context, *args, **kwargs)
-        if not user:
-            pass
 
     return is_not_admin
 
@@ -259,7 +308,7 @@ def bot_admin(func):
         if update_chat_title == message_chat_title:
             not_admin = "I'm not admin!"
         else:
-            not_admin = f"I'm not admin in <b>{update_chat_title}</b>!"
+            not_admin = f"I'm not admin in <b>{update_chat_title}</b>! "
 
         if is_bot_admin(chat, bot.id):
             return func(update, context, *args, **kwargs)
@@ -323,7 +372,7 @@ def can_promote(func):
         else:
             cant_promote = (
                 f"I can't promote/demote people in <b>{update_chat_title}</b>!\n"
-                f"Make sure I'm admin there and can appoint new admins."
+                f"Make sure I'm admin there and have the permission to appoint new admins."
             )
 
         if chat.get_member(bot.id).can_promote_members:
@@ -349,8 +398,7 @@ def can_restrict(func):
         if chat.get_member(bot.id).can_restrict_members:
             return func(update, context, *args, **kwargs)
         update.effective_message.reply_text(
-            cant_restrict,
-            parse_mode=ParseMode.HTML,
+            cant_restrict, parse_mode=ParseMode.HTML,
         )
 
     return restrict_rights
@@ -363,7 +411,8 @@ def user_can_ban(func):
         user = update.effective_user.id
         member = update.effective_chat.get_member(user)
         if (
-            not (member.can_restrict_members or member.status == "creator")
+            not member.can_restrict_members
+            and member.status != "creator"
             and user not in DRAGONS
             and user not in [777000, 1087968824]
         ):
@@ -374,10 +423,6 @@ def user_can_ban(func):
         return func(update, context, *args, **kwargs)
 
     return user_is_banhammer
-
-def callbacks_in_filters(data):
-    return filters.create(lambda flt, _, query: flt.data in query.data, data=data)
-
 
 
 def connection_status(func):
@@ -394,8 +439,7 @@ def connection_status(func):
         if conn:
             chat = dispatcher.bot.getChat(conn)
             update.__setattr__("_effective_chat", chat)
-            return func(update, context, *args, **kwargs)
-        if update.effective_message.chat.type == "private":
+        elif update.effective_message.chat.type == "private":
             update.effective_message.reply_text(
                 "Send /connect in a group that you and I have in common first.",
             )
@@ -405,8 +449,6 @@ def connection_status(func):
 
     return connected_status
 
-
-# Workaround for circular import with connection.py
 from NekoRobot.modules import connection
 
 connected = connection.connected
