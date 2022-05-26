@@ -86,7 +86,7 @@ buttons = [
                             url=f"t.me/ErisXRobot?startgroup=true")
                     ],
                    [
-                       InlineKeyboardButton(text="[Help]", callback_data="help_back"),
+                       InlineKeyboardButton(text="[Aogiri]", url="https://t.me/AnimeChatFrozen"),
                        InlineKeyboardButton(text="Chat", url="https://t.me/AnimeChatFrozen"),
                        InlineKeyboardButton(text="[Source]", url="https://t.me/NexusXSupport/12582"),
                      ],
