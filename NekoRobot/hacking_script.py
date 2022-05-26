@@ -3,7 +3,7 @@ PM_START_TEXT = """
 *やあ! Hello {} My Darling ,
 I'm An Anime Themed Multi-Featured & Advanced Group Management Bot To Manage Your Group.*
 
-◈ *Version :* `3.10.2`
+◈ *Version :* `3.10.6`
 ◈ *Server Uptime:* `{}`
 ◈ `{}` *users, across* `{}` *chats.*
 
