@@ -1,5 +1,4 @@
-
-
+#Xelcius +_+
 import html
 import re
 import os
@@ -45,7 +44,7 @@ from NekoRobot.modules.sudoers import bot_sys_stats as nao
 import NekoRobot.modules.sql.userinfo_sql as sql
 from NekoRobot.modules.disable import DisableAbleCommandHandler
 from NekoRobot.modules.sql.global_bans_sql import is_user_gbanned
-from NekoRobot.modules.sql.afk_sql import is_afk, check_afk_status
+from NekoRobot.modules.redis.afk_redis import is_user_afk, afk_reason
 from NekoRobot.modules.sql.users_sql import get_user_num_chats
 from NekoRobot.modules.helper_funcs.chat_status import sudo_plus
 from NekoRobot.modules.helper_funcs.extraction import extract_user
@@ -122,8 +121,8 @@ def hpmanager(user):
         if not sql.get_user_bio(user.id):
             new_hp -= no_by_per(total_hp, 10)
 
-        if is_afk(user.id):
-            afkst = check_afk_status(user.id)
+        if is_user_afk(user.id):
+            afkst = afk_reason(user.id)
             # if user is afk and no reason then decrease 7%
             # else if reason exist decrease 5%
             new_hp -= no_by_per(total_hp, 7) if not afkst else no_by_per(total_hp, 5)
@@ -247,7 +246,7 @@ def info(update: Update, context: CallbackContext):
                              text="Health",
                              url="https://t.me/ErisUpdates/17"),
                        InlineKeyboardButton(
-                             text="Disasters",
+                             text="Disaster",
                              url="https://t.me/ErisUpdates/15"),
                     ],
     ]
@@ -293,7 +292,7 @@ def info(update: Update, context: CallbackContext):
     if chat.type != "private" and user_id != bot.id:
         _stext = "\n• Presence: <code>{}</code>"
 
-        afk_st = is_afk(user.id)
+        afk_st = is_user_afk(user.id)
         if afk_st:
             text += _stext.format("AFK")
         else:
@@ -338,10 +337,6 @@ def info(update: Update, context: CallbackContext):
     elif user.id in WOLVES:
         text += "\n\nThe Disaster level of this person is 'Intermediate'."
         disaster_level_present = True
-    elif user.id == 5373162687:
-         text += "\n\nCo-Owner Of A Bot."
-         disaster_level_present = True
-
 
     try:
         user_member = chat.get_member(user.id)
@@ -355,14 +350,6 @@ def info(update: Update, context: CallbackContext):
                 text += f"\n\nTitle:\n<b>{custom_title}</b>"
     except BadRequest:
         pass
-
-    for mod in USER_INFO:
-        try:
-            mod_info = mod.__user_info__(user.id).strip()
-        except TypeError:
-            mod_info = mod.__user_info__(user.id, chat.id).strip()
-        if mod_info:
-            text += "\n\n" + mod_info
 
     if INFOPIC:
         try:
