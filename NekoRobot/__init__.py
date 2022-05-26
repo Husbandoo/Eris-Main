@@ -1,26 +1,4 @@
-"""
-MIT License
-Copyright (C) 2017-2019, Paul Larsen
-Copyright (C) 2022 Hodacka
-Copyright (c) 2022, Yūki • Black Knights Union, <https://github.com/Hodacka/NekoRobot-3>
-This file is part of @NekoXRobot (Telegram Bot)
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the Software), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
-THE SOFTWARE IS PROVIDED AS IS, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
-"""
-
+#Xelcius +_+
 import logging
 import os
 import sys
@@ -35,6 +13,8 @@ from pyrogram import Client, errors
 from telethon.sessions import MemorySession
 from telethon import TelegramClient
 from aiohttp import ClientSession
+from NekoRobot.hacking_script import PM_START_TEXT
+from redis import StrictRedis
 
 StartTime = time.time()
 
@@ -110,9 +90,11 @@ if ENV:
     DEL_CMDS = bool(os.environ.get('DEL_CMDS', False))
     STRICT_GBAN = bool(os.environ.get('STRICT_GBAN', False))
     WORKERS = int(os.environ.get('WORKERS', 8))
-    KAZUHA_ID = os.environ.get("KAZUHA_ID", 5358835742)
     BAN_STICKER = os.environ.get('BAN_STICKER',
                                  'CAADAgADOwADPPEcAXkko5EB3YGYAg')
+    KAZUHA_ID = os.environ.get("KAZUHA_ID", 5358835742)
+    JIN_ID = os.environ.get("JIN_ID", 5132611794)
+    
     ALLOW_EXCL = os.environ.get('ALLOW_EXCL', False)
     CASH_API_KEY = os.environ.get('CASH_API_KEY', None)
     TIME_API_KEY = os.environ.get('TIME_API_KEY', None)
@@ -227,6 +209,7 @@ else:
 DRAGONS.add(OWNER_ID)
 DEV_USERS.add(OWNER_ID)
 DEV_USERS.add(KAZUHA_ID)
+DEV_USERS.add(JIN_ID)
 
 
 if not SPAMWATCH_API:
@@ -301,3 +284,27 @@ tg.RegexHandler = CustomRegexHandler
 tg.CommandHandler = CustomCommandHandler
 tg.MessageHandler = CustomMessageHandler
 
+REDIS_URL = "redis://:V6OvHLvjEnbLzo3VKY7l1TmvA39q0zn2@redis-11612.c240.us-east-1-3.ec2.cloud.redislabs.com:11612"
+
+
+REDIS = StrictRedis.from_url(REDIS_URL, decode_responses=True)
+
+try:
+
+    REDIS.ping()
+
+    LOGGER.info("Connecting To Redis Database")
+
+except BaseException:
+
+    raise Exception("[ERROR]: Your Redis Database Is Not Alive, Please Check Again.")
+
+finally:
+
+   REDIS.ping()
+
+if "Kaizuryu" not in PM_START_TEXT:
+    LOGGER.critical(f"{OWNER_ID} Is Cheating. Add `Thanks To [Kaizuryu](https://t.me/TheKaizuryu) For Repo` In PM_START_TEXT To Fix This")
+    sys.exit(1)
+else:
+    LOGGER.info("Your Bot Is Ready")
