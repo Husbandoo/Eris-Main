@@ -4,7 +4,7 @@ emoji
 pydub
 numpy
 multicolorcaptcha
-redis==3.5.3
+redis==4.1.1
 tzlocal==2.0
 python-barcode==0.13.1
 pykeyboard
