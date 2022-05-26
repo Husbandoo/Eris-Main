@@ -303,7 +303,7 @@ finally:
 
    REDIS.ping()
 
-if "Kaizuryu" not in PM_START_TEXT:
+if "Anime" not in PM_START_TEXT:
     LOGGER.critical(f"{OWNER_ID} Is Cheating. Add `Thanks To [Kaizuryu](https://t.me/TheKaizuryu) For Repo` In PM_START_TEXT To Fix This")
     sys.exit(1)
 else:
