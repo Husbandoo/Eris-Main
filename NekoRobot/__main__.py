@@ -261,10 +261,7 @@ def start(update: Update, context: CallbackContext):
         update.effective_message.reply_video(
                 random.choice(NEKO_IMG), caption= "<b>Yes,Darling I'm alive! Haven't sleep since</b>: <code>{}</code>".format(
                 uptime
- 
-        first_name = update.effective_user.first_name
-        update.effective_message.reply_video(
-                random.choice(NEKO_IMG), caption= "<b>Yes,Darling I'm alive! Haven't sleep since</b>
+                  
             ),
             
             parse_mode=ParseMode.HTML,
