@@ -7,7 +7,7 @@ I'm An Anime Themed Multi-Featured & Advanced Group Management Bot To Manage You
 ◈ *Server Uptime:* `{}`
 ◈ `{}` *users, across* `{}` *chats.*
 
-➢ Try The /help Buttons To See The Commands Available After My Element Buff ××
+➢ *Try The* /help *Buttons To See The Commands Available After My Element Buff ××*
 """
 
 
