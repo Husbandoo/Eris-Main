@@ -88,7 +88,7 @@ buttons = [
                    [
                        InlineKeyboardButton(text="[Aogiri]", url="https://t.me/AogiriNetwork"),
                        InlineKeyboardButton(text="Chat", url="https://t.me/AnimeChatFrozen"),
-                       InlineKeyboardButton(text="[Source]", url="https://t.me/NexusXSupport/12582"),
+                       InlineKeyboardButton(text="[Owner]", url="https://t.me/Husbandoo"),
                      ],
                     [                  
                        InlineKeyboardButton(
